@@ -61,15 +61,15 @@ import matplotlib.pyplot as plt
 import portfolio_model as model
 
 config = {
-    "stocks": ["0700.HK", "0005.HK", "0939.HK", "0388.HK", "0016.HK"],
-    "benchmark": "2800.HK",
-    "currency": "HKD",
-    "prices_file": "data/prices_daily.csv",
-    "riskfree_file": "data/riskfree_daily.csv",
-    "riskfree_date_kind": "source-period label (frozen HK practice)",
+    "stocks": ["LLY", "META", "MSTR", "NVDA", "AMD"],
+    "benchmark": "SPY",
+    "currency": "USD",
+    "prices_file": "data_my_stocks/prices_daily.csv",
+    "riskfree_file": "data_my_stocks/riskfree_daily.csv",
+    "riskfree_date_kind": "actual quote date",
     "first_return_month": "2021-10",
     "last_return_month": "2026-09",
-    "as_of_date": "2026-10-05",
+    "as_of_date": "2026-10-15",
     "preferences_file": "data/certainty_equivalents.csv",
 }
 stocks = config["stocks"]

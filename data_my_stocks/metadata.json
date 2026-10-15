@@ -1,0 +1,105 @@
+{
+  "downloaded_at_utc": "2026-10-15T16:21:15.310409+00:00",
+  "market": "US",
+  "currency": "USD",
+  "stocks": [
+    "LLY",
+    "META",
+    "MSTR",
+    "NVDA",
+    "AMD"
+  ],
+  "benchmark": "SPY",
+  "start_inclusive": "2021-09-01",
+  "end_exclusive": "2026-10-01",
+  "prices": {
+    "provider": "Yahoo Finance via yfinance",
+    "yfinance_version": "1.7.0",
+    "method": "Ticker.history",
+    "interval": "1d",
+    "auto_adjust": true,
+    "repair": false,
+    "price_field": "Close (adjusted)",
+    "symbols": {
+      "LLY": {
+        "source_page": "https://finance.yahoo.com/quote/LLY/history/",
+        "currency": "USD",
+        "exchange": "NYSE",
+        "instrument_type": "EQUITY",
+        "first_date": "2021-09-01",
+        "last_date": "2026-09-30"
+      },
+      "META": {
+        "source_page": "https://finance.yahoo.com/quote/META/history/",
+        "currency": "USD",
+        "exchange": "NasdaqGS",
+        "instrument_type": "EQUITY",
+        "first_date": "2021-09-01",
+        "last_date": "2026-09-30"
+      },
+      "MSTR": {
+        "source_page": "https://finance.yahoo.com/quote/MSTR/history/",
+        "currency": "USD",
+        "exchange": "NasdaqGS",
+        "instrument_type": "EQUITY",
+        "first_date": "2021-09-01",
+        "last_date": "2026-09-30"
+      },
+      "NVDA": {
+        "source_page": "https://finance.yahoo.com/quote/NVDA/history/",
+        "currency": "USD",
+        "exchange": "NasdaqGS",
+        "instrument_type": "EQUITY",
+        "first_date": "2021-09-01",
+        "last_date": "2026-09-30"
+      },
+      "AMD": {
+        "source_page": "https://finance.yahoo.com/quote/AMD/history/",
+        "currency": "USD",
+        "exchange": "NasdaqGS",
+        "instrument_type": "EQUITY",
+        "first_date": "2021-09-01",
+        "last_date": "2026-09-30"
+      },
+      "SPY": {
+        "source_page": "https://finance.yahoo.com/quote/SPY/history/",
+        "currency": "USD",
+        "exchange": "NYSEArca",
+        "instrument_type": "ETF",
+        "first_date": "2021-09-01",
+        "last_date": "2026-09-30"
+      }
+    },
+    "common_month_end_prices": 61,
+    "potential_common_monthly_returns": 60,
+    "missing_daily_values_by_symbol": {
+      "LLY": 0,
+      "META": 0,
+      "MSTR": 0,
+      "NVDA": 0,
+      "AMD": 0,
+      "SPY": 0
+    }
+  },
+  "riskfree": {
+    "name": "FRED DGS3MO: 3-month Treasury constant-maturity yield, investment basis",
+    "source_page": "https://fred.stlouisfed.org/series/DGS3MO",
+    "request_urls": [
+      "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS3MO&cosd=2021-09-01&coed=2026-09-30"
+    ],
+    "frequency": "daily observations",
+    "currency": "USD",
+    "units": "percent per annum",
+    "date_kind": "actual_observation_date",
+    "first_observation_date": "2021-09-01",
+    "last_observation_date": "2026-09-30"
+  },
+  "pandas_version": "3.0.5",
+  "cache_policy": "Saved CSV inputs freeze this download. No automatic source substitution or stale-cache fallback. Source-response files preserve the bill download. --overwrite requests a deliberate refresh.",
+  "monthly_bill_convention": "For month t, use the last quoted value in the immediately preceding calendar month; annual_yield_percent / 1200. Date kind is disclosed in riskfree.date_kind; no stale-rate carry-forward.",
+  "missing_value_policy": "No price/rate is generated or filled. Missing observations remain missing; missing bill-source rows are omitted.",
+  "sha256": {
+    "prices_daily.csv": "259e30396b8d209d5a49eacd9ccaa11430fabfba9a5950cefd91e865836635f6",
+    "riskfree_daily.csv": "af478f8850b19f5ce8d9fef52000b75eeb6035f2a9e0294be1fd6576b04b82f0"
+  }
+}
