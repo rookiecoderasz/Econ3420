@@ -42,9 +42,9 @@ Record this **before** you see any regression results.
 
 | Prediction | My answer and reason | What I later observed |
 |------------------------|------------------------|------------------------|
-| Which stock will have the highest beta? | \[WRITE your prediction\] | \[WRITE after Question 2\] |
+| Which stock will have the highest beta? | MSTR. Its monthly volatility is about 31%, roughly 7 times SPY's 4.5% and far above AMD (20%), NVDA (14.5%), META (12.4%) and LLY (9.1%). Beta scales with a stock's volatility relative to the market's, and MSTR's price is driven by bitcoin and leverage, which should amplify market risk-on and risk-off moves. Second guess: AMD. LLY, a defensive health care stock, should have the lowest beta. | \[WRITE after Question 2\] |
 
-Prediction recorded on: \[WRITE date and time\]
+Prediction recorded on: 2026-10-16 00:28 (based only on the Q1 descriptive statistics; no regression was run)
 
 ## Setup (supplied)
 
