@@ -208,7 +208,16 @@ print("R contains raw simple returns; X contains excess returns. Do not subtract
 
 **Task to Student:**
 
-\[WRITE a table of your five stocks (name, ticker, sector, reason) and your benchmark.\]
+| Name | Ticker | Sector | Reason |
+|--------------|--------|----------------|----------------------------------|
+| Eli Lilly | LLY | Health care (pharmaceuticals) | Defensive growth from obesity and diabetes drugs; low link to tech. |
+| Meta Platforms | META | Communication services | Large-cap digital advertising and AI spending. |
+| Strategy (MicroStrategy) | MSTR | Information technology (software / bitcoin treasury) | Very high-volatility, bitcoin-linked stock. |
+| NVIDIA | NVDA | Information technology (semiconductors) | Leader in AI chips; high growth and risk. |
+| Advanced Micro Devices | AMD | Information technology (semiconductors) | Chip rival to NVIDIA; shows how same-sector stocks co-move. |
+| **Benchmark: SPDR S&P 500 ETF** | SPY | Broad US market | Tracks the S&P 500; a comparison, not a holding. |
+
+All six assets are US-listed and priced in USD.
 
 **Task to AI:** show each asset's average monthly return, volatility and average excess return. The example below is supplied; `show_table` prints a table in both HTML and PDF, and you can reuse it later.
 
@@ -435,7 +444,11 @@ Use the half-premium test from Question 6.
 
 ## (c) Data sources (for Q1)
 
-\[WRITE in a few lines: data sources, five tickers and benchmark, currency, sample dates, price adjustments and bill-rate convention. Say if you used the practice data.\]
+- **Prices:** Yahoo Finance via `yfinance` (`tools/download_data.py`), daily prices adjusted for splits and dividends.
+- **Assets:** LLY, META, MSTR, NVDA, AMD; benchmark SPY; all in USD.
+- **Sample:** 60 monthly returns, October 2021 to September 2026, from the last common trading day of each month (the starting price is from September 2021).
+- **Safe rate:** FRED 3-month Treasury yield (DGS3MO), using each month's return with the previous month's last quote, dated by actual quote date. Monthly rate is the annual percent divided by 1200.
+- I did **not** use the supplied HK practice data; the data is in `data_my_stocks/`.
 
 ## Render and submit
 

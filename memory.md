@@ -17,8 +17,8 @@
 ## Plan / status
 - [x] Step 0: setup (packages verified; memory.md created)
 - [ ] Step 0: install Quarto; rename template to `<studentID>_assignment_one.qmd` (student ID needed)
-- [ ] Step 1: beta prediction (a), data sources (c) in QMD
-- [ ] Step 2: Q1 stocks/returns table
+- [x] Step 1: data_my_stocks downloaded (LLY META MSTR NVDA AMD, SPY, USD); (c) data sources written. (a) beta prediction still STUDENT TO WRITE
+- [x] Step 2: Q1 table written (AI part supplied in template)
 - [ ] Step 3: implement 5 functions
 - [ ] Step 4: Q2-Q4 in QMD, render (saves portfolio P)
 - [ ] Step 5: Q5 run `risk_aversion_quiz.py` in terminal (interactive)
