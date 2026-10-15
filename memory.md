@@ -32,7 +32,10 @@
 - [x] Step 0: setup; Quarto installed; QMD is `1155209814_assignment_one.qmd`; repo pushed
 - [x] Step 1: data_my_stocks downloaded (LLY META MSTR NVDA AMD, SPY, USD; NBIS dropped, <60 months); (c) data sources written; (a) beta prediction written 2026-10-16 00:28 (MSTR, from volatility only)
 - [x] Step 2: Q1 table written (AI part supplied in template)
-- NOW: Step 5 (student runs quiz), then Q6.
+- NOW: waiting for STUDENT half-premium prediction (Q6). Then: enable `smaller-premium-test` cell, write Q6 student text + (b) rows 2-4, render, commit, push.
+- [x] Step 5: student chose A (data/ce_responses.csv -> data/certainty_equivalents.csv); gamma 5.9291 (m=1.14, G=5.195; menu capped m 1.14-1.71). Q5 + Q6 allocation cells ON: w* 87.6%, E(R_F) 42.3%, sigma_F 25.3%, safe 1,237.71 USD.
+- [x] Student text drafted for Q2-Q5 + (b) row 1 (AI claim). Q5 reason ("long horizon") is an assumed reason; student must confirm.
+- Review stats (temp script %TEMP%\review_stats.py): t_alpha LLY 2.1, NVDA 2.1, others <1.1; beta SE MSTR .78; resid corr NVDA-AMD .35, META-NVDA .32, LLY-MSTR -.26; sample cov LLY-MSTR negative; half-sample beta AMD 1.99->3.54; SPY Sharpe .66; avg Rf in sample 3.87% vs current 4.2%.
 - [x] Step 3a-3c: all 5 functions implemented, reviewed (clean, matches docstrings), tests pass on synthetic data, pushed (cd1a1f5)
 - [x] Step 4: Q2-Q4 cells on, MSTR SCL plot added, Q4 comparison tables added, rendered OK -> `1155209814_assignment_one.pdf`, `outputs/q5_portfolio.json` created. (a) 'observed' filled.
   - Results: beta LLY .45, META 1.15, MSTR 3.54 (highest), NVDA 2.21, AMD 2.46; R2 .05/.18/.26/.47/.31; alpha ~0.7-2.9%/month.

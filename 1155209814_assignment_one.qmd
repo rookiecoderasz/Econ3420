@@ -254,7 +254,7 @@ show_table(summary_table)
 The chart below is a plotting example only; it is not marked.
 
 ```{python}
-#| label: fig-benchmark-returns
+ #| label: fig-benchmark-returns
 #| fig-cap: "Benchmark monthly simple returns in the aligned sample."
 #| fig-width: 8
 #| fig-height: 3
@@ -304,7 +304,15 @@ fig.tight_layout()
 plt.show()
 ```
 
-**Task to Student:** \[WRITE: explain the chosen stock's $\hat\alpha_i$, $\hat\beta_i$ and $R^2$. If market excess return rises by one percentage point, what does the line predict? Why does the line not predict every monthly return? Was your initial prediction supported?\]
+**Task to Student:**
+
+I chose **MSTR** (60 months, October 2021 to September 2026).
+
+- **Alpha:** $\hat\alpha=0.0248$, i.e. about 2.5% per month of excess return that the market does not explain. It is imprecise: its standard error is about 3.5% per month ($t\approx0.70$), so it is not statistically different from zero. I do not read it as reliable skill or mispricing.
+- **Beta:** $\hat\beta=3.54$ (standard error 0.78, $t\approx4.5$). If the market's monthly excess return rises by one percentage point, the line predicts MSTR's excess return rises by about **3.54 percentage points**. A rough 95% interval is 2.0 to 5.1, so MSTR is clearly far more market-sensitive than the market itself ($\beta=1$).
+- **$R^2$:** 0.26, so the market explains only about a quarter of MSTR's monthly variation. The other 74% is firm-specific, mainly bitcoin price moves and the company's debt and share issuance to buy bitcoin.
+- **Why the line misses most months:** the residual $e_{i,t}$ collects news unrelated to the S&P 500. Its standard deviation is about 27% per month, so single months can be far from the line. Beta is also not stable: it is 3.88 in the first 30 months and 2.88 in the last 30, and a straight line cannot capture this or the fat-tailed jumps visible in the scatter plot.
+- **My prediction:** supported. MSTR has the highest beta (3.54), AMD is second (2.46) as I guessed, and LLY is lowest (0.45). The standard error on MSTR's beta (0.78) is large, so the gap to AMD is less certain than the point estimates suggest.
 
 ## 3. Understand variance and covariance (20 marks)
 
@@ -321,7 +329,11 @@ covariance_m = model.single_index_covariance(
 show_table(covariance_m, decimals=6)
 ```
 
-**Task to Student:** \[WRITE: choose one covariance entry and explain its sign. Why can combining stocks that move differently reduce risk? Give one reason why the zero-residual-covariance assumption might fail for your stocks.\]
+**Task to Student:**
+
+- **One entry and its sign:** Cov(LLY, MSTR) $=\hat\beta_{LLY}\hat\beta_{MSTR}\hat\sigma_M^2=0.449\times3.543\times0.00202\approx0.0032$, which is positive. In the single-index model, two stocks are linked only through the market, so the covariance has the sign of $\beta_i\beta_j$. Both betas are positive, so the model says both tend to rise when the market rises. The raw sample covariance is actually negative (about $-0.0029$). LLY behaved as a defensive stock in months when bitcoin-linked MSTR fell, which the model cannot represent.
+- **Why combining stocks reduces risk:** portfolio variance is $\sum_i w_i^2\sigma_i^2+\sum_{i\ne j}w_iw_j\mathrm{Cov}(X_i,X_j)$. When covariances are small relative to variances, the firm-specific parts partly cancel. The five stocks' annual volatilities average about 61%, but the equally weighted portfolio's is 39.7%. The optimized portfolio's 28.9% is below even the least volatile single stock (LLY, about 32%).
+- **Why the zero-residual-covariance assumption can fail:** NVDA and AMD are both AI and semiconductor chip makers. They share industry shocks such as chip export rules, data-centre spending and AI sentiment, which the S&P 500 does not fully capture. Their residual correlation is +0.35 (META and NVDA +0.32), so the model understates their covariance: 0.0110 against a sample value of 0.0171 per month. This understates the risk of holding both.
 
 ## 4. Find and assess a risky portfolio (20 marks)
 
@@ -382,7 +394,15 @@ Path("outputs/q5_portfolio.json").write_text(
 print("Saved outputs/q5_portfolio.json for Question 5.")
 ```
 
-**Task to Student:** \[WRITE: check the weights are nonnegative and sum to 100%, and that the Sharpe ratio is at least as high as equal weighting. What do you notice about the holdings? Why can historical results not guarantee future performance?\]
+**Task to Student:**
+
+- **Checks:** all five weights are nonnegative and sum to 100%. The optimized Sharpe ratio is 1.502, above the equally weighted 1.168 (and SPY's 0.66 over the same period), as it must be since equal weighting is one of the portfolios the optimizer could have chosen.
+- **Holdings:** the portfolio is concentrated: LLY 54.8% and NVDA 32.0% make up 87%. MSTR gets only 2.2% even though it had the highest average excess return (66% a year), because its 108% annual volatility makes it a poor trade-off. LLY gets the most because it combines a high historical mean (34% a year) with a low beta, so it diversifies the three tech stocks.
+- **Why history cannot guarantee the future:**
+    - Five years gives very imprecise means. The standard error of an annual mean is roughly volatility$/\sqrt{5}$: about 14% for LLY and 48% for MSTR. The optimizer treats these noisy means as exact and puts large weights on whichever stock looked best.
+    - The inputs are unstable. LLY's annual excess return was 51% in the first half of the sample and 18% in the second, and AMD's beta rose from 2.0 to 3.5.
+    - I chose these stocks knowing they had done well, which biases their historical returns upward. A Sharpe ratio of 1.5 would be exceptional for an investor choosing at the start of the period.
+    - The single-index model misses industry links (see Question 3), and the period includes regime changes such as the 2022 interest-rate rise and the AI boom.
 
 **Now render the report once.** This creates `outputs/q5_portfolio.json`. If $\delta\leq0$, keep it and explain it in Question 6; do not replace it with a made-up positive return.
 
@@ -400,7 +420,6 @@ It shows $P$'s mean and volatility, its lowest 10%, middle 80% and highest 10% r
 
 ```{python}
 #| label: preference-scaffold
-#| eval: false
 from risk_aversion_quiz import load_preferences
 preference_trials = None
 gamma = None
@@ -423,7 +442,12 @@ else:
 
 If you change your stocks, data or Question 4 portfolio, run the quiz again: the cell rejects a choice made for a different portfolio.
 
-**Task to Student:** \[WRITE: which letter you chose and why, and what a larger gamma means. This is a coarse estimate from a five-option menu; say if none of the options fit you well. If $\delta\leq0$, skip the quiz and explain why in Question 6.\]
+**Task to Student:**
+
+- **The menu:** the quiz used $P$'s mean 47.63% and volatility 28.91%, with the safe rate of 4.20% dated 30 September 2026. For 10,000 USD, the lowest 10% of outcomes is below 11,058 USD (+10.6%) and the highest 10% above 18,469 USD (+84.7%).
+- **My choice:** I chose **A (12,284.94 USD)**, which implies $\gamma=5.93$. That is 1.14 times $G=\delta/\sigma_P^2=5.20$. I have a long investment horizon and no near-term need for the money, and even the lowest-10% outcome is a gain under this approximation. So I would give up a sure 12,285 USD only for a portfolio worth noticeably more.
+- **What a larger gamma means:** stronger dislike of variance. The penalty $\gamma\sigma_P^2/2$ grows, the certainty equivalent falls, and the investor holds less of $P$.
+- **How well the menu fits:** it is a coarse estimate. Because $P$'s historical Sharpe ratio is very high, the quiz capped the choices: the multipliers only range from 1.14 to 1.71, so every option implies a risky share between 59% and 88%. A is the edge of the menu, so my true $\gamma$ may be even lower than 5.93. The bell-curve ranges also understate the crash risk of MSTR, NVDA and AMD.
 
 ## 6. Choose your stock-and-safe-asset mix (15 marks)
 
@@ -433,7 +457,6 @@ The **final portfolio** $F$ puts a share $w_r^*$ of wealth in $P$ (keeping its Q
 
 ```{python}
 #| label: complete-portfolio-scaffold
-#| eval: false
 allocation_premium = portfolio["excess_return"]
 allocation_volatility = portfolio["volatility"]
 mix = model.allocate_portfolio(
@@ -491,7 +514,7 @@ Use the half-premium test from Question 6.
 
 | Item | My entry |
 |------------------------------------|------------------------------------|
-| AI tool and relevant claim | \[NAME the tool and QUOTE its claim\] |
+| AI tool and relevant claim | GitHub Copilot (Claude): "$w_r^*=\delta/(\gamma\sigma_P^2)$ is proportional to $\delta$, so halving $\delta$ with $\gamma$ and $\sigma_P^2$ fixed halves the risky share exactly, from 87.6% to about 43.8%." |
 | My prediction before testing | \[WRITE the prediction and reason\] |
 | My test and result | \[STATE the fixed inputs and original/new risky shares\] |
 | My decision | \[EXPLAIN whether I accept or revise the recommendation\] |
