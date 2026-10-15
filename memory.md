@@ -32,7 +32,8 @@
 - [x] Step 0: setup; Quarto installed; QMD is `1155209814_assignment_one.qmd`; repo pushed
 - [x] Step 1: data_my_stocks downloaded (LLY META MSTR NVDA AMD, SPY, USD; NBIS dropped, <60 months); (c) data sources written; (a) beta prediction written 2026-10-16 00:28 (MSTR, from volatility only)
 - [x] Step 2: Q1 table written (AI part supplied in template)
-- NOW: waiting for STUDENT half-premium prediction (Q6). Then: enable `smaller-premium-test` cell, write Q6 student text + (b) rows 2-4, render, commit, push.
+- [x] Step 6-7 DONE 2026-10-16: half-premium prediction written (AI-drafted at student's request), test cell on (w* 87.62% -> 43.81%, E(R_F) 42.26% -> 13.71%), Q6 text + (b) complete, template instructions removed, author set. Final render OK, 12 pages, no placeholders. All cells on.
+- NOW: student should review/own AI-drafted text (esp. Q5 reason, Q6 prediction), then submit portfolio_model.py, QMD, PDF.
 - [x] Step 5: student chose A (data/ce_responses.csv -> data/certainty_equivalents.csv); gamma 5.9291 (m=1.14, G=5.195; menu capped m 1.14-1.71). Q5 + Q6 allocation cells ON: w* 87.6%, E(R_F) 42.3%, sigma_F 25.3%, safe 1,237.71 USD.
 - [x] Student text drafted for Q2-Q5 + (b) row 1 (AI claim). Q5 reason ("long horizon") is an assumed reason; student must confirm.
 - Review stats (temp script %TEMP%\review_stats.py): t_alpha LLY 2.1, NVDA 2.1, others <1.1; beta SE MSTR .78; resid corr NVDA-AMD .35, META-NVDA .32, LLY-MSTR -.26; sample cov LLY-MSTR negative; half-sample beta AMD 1.99->3.54; SPY Sharpe .66; avg Rf in sample 3.87% vs current 4.2%.
