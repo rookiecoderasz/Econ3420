@@ -1,0 +1,40 @@
+{
+  "dataset_kind": "frozen offline practice example; not student-selected stocks",
+  "market": "US",
+  "currency": "USD",
+  "stocks": [
+    "AAPL",
+    "KO",
+    "JPM",
+    "XOM",
+    "NVDA"
+  ],
+  "benchmark": "SPY",
+  "start_inclusive": "2021-09-01",
+  "end_exclusive": "2026-10-01",
+  "frozen_source_as_of": "2026-10-02",
+  "prices": {
+    "provider": "Yahoo Finance adjusted daily Close via yfinance auto_adjust=True",
+    "copied_from": "A1/data/prices_us_daily.csv",
+    "common_month_end_prices": 61,
+    "potential_common_monthly_returns": 60,
+    "source_page": "https://finance.yahoo.com/quote/SPY/history/"
+  },
+  "riskfree": {
+    "copied_from": "A1/data/monthly_rf.csv",
+    "original_column": "dgs3mo_annual_percent",
+    "frequency": "monthly end-period snapshots (sparse; not daily)",
+    "date_kind": "source_period_label",
+    "units": "percent per annum",
+    "source_page": "https://fred.stlouisfed.org/series/DGS3MO",
+    "first_observation_date": "2021-09-30",
+    "last_observation_date": "2026-09-30"
+  },
+  "monthly_bill_convention": "For each return month use the snapshot in the immediately preceding calendar month; annual_yield_percent / 1200. Dates are inherited source-period labels, not reconstructed daily observations. Do not carry a stale snapshot forward.",
+  "cache_policy": "Copied once from the existing frozen instructor sample. No new source observations, interpolation or synthetic values. For your own choices download into data_my_stocks with the separate tool.",
+  "sha256": {
+    "prices_daily.csv": "c1b37a421c2a887910738cbd9bdf3260095f284de725aea6d61cd814f86cd871",
+    "riskfree_daily.csv": "501a7eea54f5dfe1d211dfe9d314994be38e0148c064322fcaccd97e679d3d2a"
+  },
+  "prospective_rate_convention": "Use the latest available quote in this saved rate file and disclose its source-period label. This frozen quote is not claimed to be the globally latest current quote; refresh a current quote from the same official source and record its date separately if needed."
+}

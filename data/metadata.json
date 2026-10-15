@@ -1,0 +1,40 @@
+{
+  "dataset_kind": "frozen offline practice example; not student-selected stocks",
+  "market": "HK",
+  "currency": "HKD",
+  "stocks": [
+    "0700.HK",
+    "0005.HK",
+    "0939.HK",
+    "0388.HK",
+    "0016.HK"
+  ],
+  "benchmark": "2800.HK",
+  "start_inclusive": "2021-09-01",
+  "end_exclusive": "2026-10-01",
+  "frozen_source_as_of": "2026-10-02",
+  "prices": {
+    "provider": "Yahoo Finance adjusted daily Close via yfinance auto_adjust=True",
+    "copied_from": "A1/data/prices_hk_daily.csv",
+    "common_month_end_prices": 61,
+    "potential_common_monthly_returns": 60,
+    "source_page": "https://finance.yahoo.com/quote/2800.HK/history/"
+  },
+  "riskfree": {
+    "copied_from": "A1/data/monthly_rf.csv",
+    "original_column": "hkma_91d_annual_percent",
+    "frequency": "monthly end-period snapshots (sparse; not daily)",
+    "date_kind": "source_period_label",
+    "units": "percent per annum",
+    "source_page": "https://apidocs.hkma.gov.hk/documentation/market-data-and-statistics/monthly-statistical-bulletin/efbn/efbn-yield-endperiod/",
+    "first_observation_date": "2021-09-30",
+    "last_observation_date": "2026-08-31"
+  },
+  "monthly_bill_convention": "For each return month use the snapshot in the immediately preceding calendar month; annual_yield_percent / 1200. Dates are inherited source-period labels, not reconstructed daily observations. Do not carry a stale snapshot forward.",
+  "cache_policy": "Copied once from the existing frozen instructor sample. No new source observations, interpolation or synthetic values. For your own choices download into data_my_stocks with the separate tool.",
+  "sha256": {
+    "prices_daily.csv": "6731738cbdf24282d63f211d74c3a8e23cfc80d515627322e047e570662c096c",
+    "riskfree_daily.csv": "6e7bc397303a1d3e7f845bd3cf1ccd1ff685421409c86f27553b4d49ad58c232"
+  },
+  "prospective_rate_convention": "Use the latest available quote in this saved rate file and disclose its source-period label. This frozen quote is not claimed to be the globally latest current quote; refresh a current quote from the same official source and record its date separately if needed."
+}

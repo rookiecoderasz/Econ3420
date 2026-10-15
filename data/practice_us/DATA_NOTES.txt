@@ -1,0 +1,8 @@
+FROZEN OFFLINE PRACTICE EXAMPLE
+
+These stock lists demonstrate the calculations; they do not replace student stock choices.
+Prices are copied from the course's earlier frozen dataset and filtered to September 2021 through September 2026.
+The riskfree_daily.csv filename matches the analysis input contract, but its rows are SPARSE MONTHLY END-PERIOD SNAPSHOTS copied from that dataset's monthly cash-rate file. The inherited dates are source-period labels, not invented daily observations. No interpolation or daily expansion has been performed.
+A quote of 2.70 means 2.70 percent per annum; divide by 1200 for the classroom monthly rate proxy.
+Keep metadata.json for original filenames, source links, sample bounds and fingerprints.
+Use tools/download_data.py --out-dir data_my_stocks for your own preferred stocks.
