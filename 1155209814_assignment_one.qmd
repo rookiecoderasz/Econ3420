@@ -243,6 +243,8 @@ summary_table.index.name = "Asset"
 show_table(summary_table)
 ```
 
+The numbers match the stock descriptions above. The three AI and tech names and bitcoin-linked MSTR had both the highest average returns (MSTR 5.8%, NVDA 5.1%, AMD 4.7% per month) and the highest volatility (MSTR 31%, AMD 20%, NVDA 14.5%). Defensive LLY earned a strong 3.2% a month with the lowest stock volatility (9.1%). Every stock was far more volatile than SPY (4.5%), the diversified market benchmark, which returned 1.2% a month.
+
 The chart below is a plotting example only; it is not marked.
 
 ```{python}
@@ -377,7 +379,8 @@ q5_inputs = normalize_portfolio_inputs({
     "first_return_month": str(X.index[0]),
     "last_return_month": str(X.index[-1]),
     "n_months": len(X),
-    "data_fingerprint": hashlib.sha256(X.to_csv().encode()).hexdigest(),
+    # Fixed line ending so Windows and Mac give the same fingerprint.
+    "data_fingerprint": hashlib.sha256(X.to_csv(lineterminator="\n").encode()).hexdigest(),
 })
 Path("outputs").mkdir(exist_ok=True)
 Path("outputs/q5_portfolio.json").write_text(
@@ -527,12 +530,61 @@ Use the half-premium test from Question 6.
 - **Safe rate:** FRED 3-month Treasury yield (DGS3MO), using each month's return with the previous month's last quote, dated by actual quote date. Monthly rate is the annual percent divided by 1200.
 - I did **not** use the supplied HK practice data; the data is in `data_my_stocks/`.
 
-## Render and submit
+## Appendix: evidence for statistics quoted in the text
 
-From the folder containing this file, run (Typst produces the PDF; no LaTeX needed):
+These tables compute the t-statistics, residual correlations, sample covariances and split-sample estimates quoted in Questions 2–4 from the same $X$ and regression results.
 
-``` text
-quarto render studentID_assignment_one.qmd --to typst
+```{python}
+#| label: appendix-regression-inference
+T_obs = len(X)
+xm = X[benchmark]
+sxx = ((xm - xm.mean()) ** 2).sum()
+resid_var = (residuals ** 2).sum() / (T_obs - 2)
+se_beta = np.sqrt(resid_var / sxx)
+se_alpha = np.sqrt(resid_var * (1 / T_obs + xm.mean() ** 2 / sxx))
+inference = pd.DataFrame({
+    "alpha": estimates["alpha"], "SE alpha": se_alpha,
+    "t alpha": estimates["alpha"] / se_alpha,
+    "beta": estimates["beta"], "SE beta": se_beta,
+    "t beta": estimates["beta"] / se_beta,
+    "Residual SD": np.sqrt(resid_var),
+})
+inference.index.name = "Stock"
+show_table(inference, decimals=4)
 ```
 
-Open the PDF and check that every table, figure and equation appears and no placeholder is left. Submit **three files**: `studentID_assignment_one.qmd`, `studentID_assignment_one.pdf` and your completed `portfolio_model.py`.
+```{python}
+#| label: appendix-residual-correlation
+resid_corr = residuals[stocks].corr()
+resid_corr.index.name = "Residual corr."
+show_table(resid_corr, decimals=2)
+pairs = [("LLY", "MSTR"), ("NVDA", "AMD"), ("META", "NVDA")]
+pairs = [(a, b) for a, b in pairs if a in stocks and b in stocks]
+sample_cov = X[stocks].cov()
+cov_check = pd.DataFrame({
+    "Model cov": [covariance_m.loc[a, b] for a, b in pairs],
+    "Sample cov": [sample_cov.loc[a, b] for a, b in pairs],
+}, index=[f"{a}-{b}" for a, b in pairs])
+cov_check.index.name = "Pair (monthly)"
+show_table(cov_check, decimals=5)
+```
+
+```{python}
+#| label: appendix-stability
+half = T_obs // 2
+first_est, _ = model.estimate_index_model(X.iloc[:half], stocks, benchmark)
+second_est, _ = model.estimate_index_model(X.iloc[half:], stocks, benchmark)
+annual_vol = np.sqrt(12) * X[stocks].std(ddof=1)
+stability = pd.DataFrame({
+    "Beta, 1st half": first_est["beta"],
+    "Beta, 2nd half": second_est["beta"],
+    "Ann. excess, 1st half (%)": 100 * 12 * X[stocks].iloc[:half].mean(),
+    "Ann. excess, 2nd half (%)": 100 * 12 * X[stocks].iloc[half:].mean(),
+    "SE of ann. mean (%)": 100 * annual_vol / np.sqrt(T_obs / 12),
+})
+stability.index.name = "Stock"
+show_table(stability, decimals=2)
+spy_sharpe = 12 * xm.mean() / (np.sqrt(12) * xm.std(ddof=1))
+print(f"{benchmark} annual Sharpe ratio over the sample: {spy_sharpe:.3f}")
+print(f"Average monthly bill rate, annualized: {100 * 12 * (R[benchmark] - X[benchmark]).mean():.2f}%")
+```
