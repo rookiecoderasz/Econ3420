@@ -32,8 +32,14 @@
 - [x] Step 0: setup; Quarto installed; QMD is `1155209814_assignment_one.qmd`; repo pushed
 - [x] Step 1: data_my_stocks downloaded (LLY META MSTR NVDA AMD, SPY, USD; NBIS dropped, <60 months); (c) data sources written; (a) beta prediction written 2026-10-16 00:28 (MSTR, from volatility only)
 - [x] Step 2: Q1 table written (AI part supplied in template)
-- NO regression has been run yet. Fill 'What I later observed' in (a) after Q2.
-- [x] Step 3a-3c: all 5 functions implemented in `portfolio_model.py`, synthetic tests pass (script in %TEMP%\t_pm); not yet run on our real data
+- NOW: Step 5 (student runs quiz), then Q6.
+- [x] Step 3a-3c: all 5 functions implemented, reviewed (clean, matches docstrings), tests pass on synthetic data, pushed (cd1a1f5)
+- [x] Step 4: Q2-Q4 cells on, MSTR SCL plot added, Q4 comparison tables added, rendered OK -> `1155209814_assignment_one.pdf`, `outputs/q5_portfolio.json` created. (a) 'observed' filled.
+  - Results: beta LLY .45, META 1.15, MSTR 3.54 (highest), NVDA 2.21, AMD 2.46; R2 .05/.18/.26/.47/.31; alpha ~0.7-2.9%/month.
+  - Optimal w: LLY 54.8%, META 3.2%, MSTR 2.2%, NVDA 32.0%, AMD 7.9%; excess ret 43.4%, vol 28.9%, Sharpe 1.502 vs equal-weight 46.3%/39.7%/1.168. delta>0 so Q5/Q6 normal path.
+  - Not yet committed after Step 4.
+  - Q6 display TODO code written (cells still eval:false). Full-run test 2026-10-16: temp copy with all cells on + throwaway choice 'B' (temp CSV, not real data) rendered OK, all 12 cells pass; real data/certainty_equivalents.csv untouched (student's real quiz run still needed).
+  - Review 2026-10-16: re-rendered OK (exit 0, only deprecation/kernel warnings); JSON valid (weights sum 1, premium 0.43434, vol 0.289142, Rf 0.042 dated 2026-09-30, n=60). Remaining placeholders: Q2-Q6 student text, (b) table (4 rows); Q5/Q6 cells still eval:false until student quiz run.
 - [ ] Step 4: switch on Q2-Q4 cells, add SCL plot (choose a stock, e.g. MSTR), Q4 comparison table; render once (saves outputs/q5_portfolio.json); fill 'observed' in (a)
 - [ ] Step 5: STUDENT runs quiz in terminal and picks A-E; then switch on Q5 cell
 - [ ] Step 6: STUDENT writes half-premium prediction BEFORE test cell; switch on Q6 cells; fill (b)

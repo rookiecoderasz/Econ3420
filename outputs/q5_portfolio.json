@@ -1,0 +1,20 @@
+{
+  "schema_version": 2,
+  "weights": {
+    "LLY": 0.5481890243780875,
+    "META": 0.032156374825228214,
+    "MSTR": 0.0215939368597152,
+    "NVDA": 0.3194626237955243,
+    "AMD": 0.07859804014144478
+  },
+  "annual_premium": 0.4343399849523389,
+  "annual_volatility": 0.28914209519256034,
+  "annual_safe_rate": 0.042,
+  "n_months": 60,
+  "currency": "USD",
+  "safe_rate_date": "2026-09-30",
+  "safe_rate_date_kind": "actual quote date",
+  "first_return_month": "2021-10",
+  "last_return_month": "2026-09",
+  "data_fingerprint": "187f703c659e49e522bbb7aa33ba4bf110f8e39e477490341ff83e74c6a3953c"
+}

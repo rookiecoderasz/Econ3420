@@ -42,8 +42,8 @@ Record this **before** you see any regression results.
 
 | Prediction | My answer and reason | What I later observed |
 |------------------------|------------------------|------------------------|
-| Which stock will have the highest beta? | MSTR. Its monthly volatility is about 31%, roughly 7 times SPY's 4.5% and far above AMD (20%), NVDA (14.5%), META (12.4%) and LLY (9.1%). Beta scales with a stock's volatility relative to the market's, and MSTR's price is driven by bitcoin and leverage, which should amplify market risk-on and risk-off moves. Second guess: AMD. LLY, a defensive health care stock, should have the lowest beta. | \[WRITE after Question 2\] |
-
+| Which stock will have the highest beta? | MSTR. Its monthly volatility is about 31%, roughly 7 times SPY's 4.5% and far above AMD (20%), NVDA (14.5%), META (12.4%) and LLY (9.1%). Beta scales with a stock's volatility relative to the market's, and MSTR's price is driven by bitcoin and leverage, which should amplify market risk-on and risk-off moves. Second guess: AMD. LLY, a defensive health care stock, should have the lowest beta. | MSTR had the highest beta, $\hat\beta=3.54$ (NVDA 2.21, AMD 2.46, META 1.15, LLY 0.45). Prediction supported. |
+ 
 Prediction recorded on: 2026-10-16 00:28 (based only on the Q1 descriptive statistics; no regression was run)
 
 ## Setup (supplied)
@@ -275,17 +275,34 @@ $$ X_{i,t}=\alpha_i+\beta_i X_{M,t}+e_{i,t},\qquad X_{i,t}=R_{i,t}-R_{f,t},\quad
 
 ```{python}
 #| label: regression-example
-#| eval: false
 estimates, residuals = model.estimate_index_model(X, stocks, benchmark)
 show_table(estimates.rename(columns={
     "alpha": r"$\hat\alpha_i$", "beta": r"$\hat\beta_i$",
     "r_squared": r"$R^2$",
 }), decimals=4)
-# Add a separate cell for ONE stock's scatter plot and fitted line,
-# using estimates.loc[chosen_stock] for its intercept and slope.
 ```
 
-\[INSERT the scatter plot here.\]
+```{python}
+#| label: fig-scl
+#| fig-cap: "MSTR monthly excess returns against SPY monthly excess returns, with the fitted security characteristic line."
+#| fig-width: 6
+#| fig-height: 4
+chosen_stock = "MSTR"
+est = estimates.loc[chosen_stock]
+x_pct = 100 * X[benchmark]
+y_pct = 100 * X[chosen_stock]
+grid = np.linspace(x_pct.min(), x_pct.max(), 100)
+fig, ax = plt.subplots(figsize=(6, 4))
+ax.scatter(x_pct, y_pct, s=18, alpha=0.7)
+ax.plot(grid, 100 * est["alpha"] + est["beta"] * grid, color="red",
+        label=f"Fitted SCL: beta = {est['beta']:.2f}, $R^2$ = {est['r_squared']:.2f}")
+ax.set(title=f"{chosen_stock} vs {benchmark}: security characteristic line",
+       xlabel=f"{benchmark} monthly excess return (%)",
+       ylabel=f"{chosen_stock} monthly excess return (%)")
+ax.legend()
+fig.tight_layout()
+plt.show()
+```
 
 **Task to Student:** \[WRITE: explain the chosen stock's $\hat\alpha_i$, $\hat\beta_i$ and $R^2$. If market excess return rises by one percentage point, what does the line predict? Why does the line not predict every monthly return? Was your initial prediction supported?\]
 
@@ -297,7 +314,6 @@ $$ \sigma_i^2=\beta_i^2\sigma_M^2+\sigma^2(e_i),\qquad \mathbf{Cov}\left(X_i,X_j
 
 ```{python}
 #| label: single-index-risk-scaffold
-#| eval: false
 market_variance_m = X[benchmark].var(ddof=1)
 covariance_m = model.single_index_covariance(
     estimates["beta"], X[benchmark], residuals
@@ -317,11 +333,29 @@ This cell also saves your portfolio to `outputs/q5_portfolio.json` for Question 
 
 ```{python}
 #| label: optimization-scaffold
-#| eval: false
 annual_excess_means = 12 * X[stocks].mean()
 annual_covariance = 12 * covariance_m
 portfolio = model.optimize_risky_portfolio(annual_excess_means, annual_covariance)
-# TODO: display portfolio's weights and statistics alongside equal weighting.
+equal_w = pd.Series(1 / len(stocks), index=stocks)
+opt_w = portfolio["weights"].reindex(stocks)
+eq_excess = float(equal_w @ annual_excess_means)
+eq_vol = float(np.sqrt(equal_w @ annual_covariance.loc[stocks, stocks] @ equal_w))
+eq_sharpe = eq_excess / eq_vol
+assert (opt_w >= -1e-9).all() and abs(opt_w.sum() - 1) < 1e-9
+assert portfolio["sharpe"] >= eq_sharpe - 1e-9
+weights_table = pd.DataFrame({
+    "Optimized weight (%)": 100 * opt_w,
+    "Equal weight (%)": 100 * equal_w,
+})
+weights_table.index.name = "Stock"
+show_table(weights_table, decimals=2)
+stats_table = pd.DataFrame({
+    "Annual excess return (%)": [100 * portfolio["excess_return"], 100 * eq_excess],
+    "Annual volatility (%)": [100 * portfolio["volatility"], 100 * eq_vol],
+    "Sharpe ratio": [portfolio["sharpe"], eq_sharpe],
+}, index=["Optimized", "Equal weight"])
+stats_table.index.name = "Portfolio"
+show_table(stats_table, decimals=3)
 
 # Save the exact portfolio and sample used to generate Question 5's menu.
 import hashlib
@@ -410,7 +444,19 @@ if allocation_premium > 0:
     assert 0 < mix["risky_share"] < 1
 else:
     assert mix["risky_share"] == 0
-# TODO: display the risky share, holdings and annual mix statistics.
+holdings_table = pd.DataFrame({
+    "Weight (%)": 100 * mix["holdings"]["weight"],
+    "Amount": mix["holdings"]["amount"],
+})
+holdings_table.index.name = "Holding"
+show_table(holdings_table, decimals=2)
+mix_table = pd.DataFrame({
+    "Value": [100 * mix["risky_share"], 100 * mix["expected_return"],
+              100 * mix["volatility"]],
+}, index=["Risky share w* (%)", "Expected annual return E(R_F) (%)",
+          "Annual volatility sigma_F (%)"])
+mix_table.index.name = "Final portfolio F"
+show_table(mix_table, decimals=2)
 ```
 
 **Task to Student:** \[WRITE your prediction **before** running the next cell: if $P$'s expected excess return $\delta$ were halved, with weights, variance and $\gamma$ unchanged, what would happen to $w_r^*$? Why?\]
@@ -424,7 +470,15 @@ half_mix = model.allocate_portfolio(
     portfolio["weights"], 0.5 * allocation_premium,
     allocation_volatility, gamma, rf_current, 10000
 )
-# TODO: display and compare the original and new risky shares.
+comparison = pd.DataFrame({
+    "Original": [100 * mix["risky_share"], 100 * mix["expected_return"],
+                 100 * mix["volatility"]],
+    "Half premium": [100 * half_mix["risky_share"], 100 * half_mix["expected_return"],
+                     100 * half_mix["volatility"]],
+}, index=["Risky share w* (%)", "Expected annual return (%)",
+          "Annual volatility (%)"])
+comparison.index.name = "Result"
+show_table(comparison, decimals=2)
 ```
 
 **Nonpositive-premium exception:** if $\delta\leq0$, report 100% in the safe asset, expected return $R_f$ and zero volatility; the half-premium test also gives 0%. Explain why positive risk aversion cannot give an interior allocation.
